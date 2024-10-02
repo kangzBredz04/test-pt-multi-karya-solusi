@@ -9,6 +9,7 @@ import CustomerDashboard from "./pages/CustomerDashboard.jsx";
 import EmployeeDashboard from "./pages/EmployeeDashboard.jsx";
 import ProductMaster from "./pages/ProductMaster.jsx";
 import Home from "./pages/Home.jsx";
+import AuthLayout from "./layouts/AuthLayout.jsx"; // Import the AuthLayout
 
 const user = {
   name: "John Doe",
@@ -21,17 +22,22 @@ const user = {
 
 const router = createBrowserRouter([
   {
-    element: <App />,
+    element: <AuthLayout />, // Use AuthLayout for authentication routes
+    children: [
+      {
+        path: "/login",
+        element: <Login />,
+        title: "Login",
+      },
+    ],
+  },
+  {
+    element: <App />, // Main app layout with header and footer
     children: [
       {
         path: "/",
         element: <Home />,
         title: "Home",
-      },
-      {
-        path: "/login",
-        element: <Login />,
-        title: "Login",
       },
       {
         path: "/user-profile",
