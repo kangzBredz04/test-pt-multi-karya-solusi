@@ -7,6 +7,8 @@ import Login from "./pages/Login.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
 import CustomerDashboard from "./pages/CustomerDashboard.jsx";
 import EmployeeDashboard from "./pages/EmployeeDashboard.jsx";
+import ProductMaster from "./pages/ProductMaster.jsx";
+import Home from "./pages/Home.jsx";
 
 const user = {
   name: "John Doe",
@@ -23,8 +25,8 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/",
-        // element: <Home />,
-        title: "Beranda",
+        element: <Home />,
+        title: "Home",
       },
       {
         path: "/login",
@@ -45,6 +47,11 @@ const router = createBrowserRouter([
         path: "/employee-dashboard",
         element: <EmployeeDashboard />,
         title: "Employee Dashboard",
+      },
+      {
+        path: "/product-master",
+        element: <ProductMaster />,
+        title: "Product Master",
       },
     ],
   },
