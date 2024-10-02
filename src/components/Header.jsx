@@ -6,7 +6,7 @@ export default function Header() {
         <div className="text-2xl font-bold">
           <img
             src="https://mksolusi.id/wp-content/uploads/2019/05/logo.png"
-            className="w-16"
+            className="w-[60px]"
             alt=""
           />
         </div>
