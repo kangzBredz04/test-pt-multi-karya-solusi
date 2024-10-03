@@ -4,11 +4,48 @@ import { FaGoogle, FaApple, FaFacebookF } from "react-icons/fa";
 export default function Login() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    // Logic for login can be added here
-    console.log("Username:", username, "Password:", password);
+
+    try {
+      const response = await fetch(
+        "https://api2024.mksolusi.id/api/auth/login",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            username: username,
+            password: password,
+          }),
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error("Network response was not ok");
+      }
+
+      const data = await response.json();
+
+      // Cek jika login berhasil (status = 0)
+      if (data.status === 0) {
+        alert("Login successful!");
+        window.location.href = "/admin/user-profile";
+        // Simpan api_token, username, dan fullname ke localStorage
+        localStorage.setItem("id", data.userdata.id);
+        localStorage.setItem("api_token", data.userdata.api_token);
+        localStorage.setItem("username", data.userdata.username);
+        localStorage.setItem("fullname", data.userdata.detail.fullname);
+      } else {
+        setErrorMessage("Login failed. Please check your credentials.");
+      }
+    } catch (error) {
+      setErrorMessage("An error occurred while logging in. Please try again.");
+      console.error("Error during login:", error);
+    }
   };
 
   return (
@@ -63,6 +100,9 @@ export default function Login() {
                 Forgot Password?
               </a>
             </div>
+            {errorMessage && (
+              <div className="text-red-500 text-sm mb-4">{errorMessage}</div>
+            )}
             <button
               type="submit"
               className="bg-[#17375e] hover:bg-[317375e] text-white font-semibold w-full py-3 rounded focus:outline-none focus:shadow-outline transition duration-200"

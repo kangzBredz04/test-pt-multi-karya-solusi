@@ -5,20 +5,16 @@ import "./index.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import Login from "./pages/Login.jsx";
 import UserProfile from "./pages/UserProfile.jsx";
-import CustomerDashboard from "./pages/CustomerDashboard.jsx";
-import EmployeeDashboard from "./pages/EmployeeDashboard.jsx";
-import ProductMaster from "./pages/ProductMaster.jsx";
 import Home from "./pages/Home.jsx";
 import AuthLayout from "./layouts/AuthLayout.jsx"; // Import the AuthLayout
-
-const user = {
-  name: "John Doe",
-  email: "john.doe@example.com",
-  bio: "Web Developer with a passion for building beautiful and functional websites.",
-  phone: "123-456-7890",
-  website: "www.johndoe.com",
-  avatar: "https://via.placeholder.com/150",
-};
+import Admin from "./pages/Admin.jsx";
+import ForbiddenPage from "./pages/ForbiddenPage.jsx";
+import InputDataBarang from "./pages/InputDataBarang.jsx";
+import InputDataCustomer from "./pages/InputDataCustomer.jsx";
+import InputTransaksiPenjualan from "./pages/InputTransaksiPenjualan.jsx";
+import LaporanPenjualan from "./pages/LaporanPenjualan.jsx";
+import DashboardPelanggan from "./pages/DashboardPelanggan.jsx";
+import DashboardKaryawan from "./pages/DashboardKaryawan.jsx";
 
 const router = createBrowserRouter([
   {
@@ -32,6 +28,10 @@ const router = createBrowserRouter([
     ],
   },
   {
+    element: <ForbiddenPage />,
+    path: "/forbidden",
+  },
+  {
     element: <App />, // Main app layout with header and footer
     children: [
       {
@@ -39,25 +39,46 @@ const router = createBrowserRouter([
         element: <Home />,
         title: "Home",
       },
+    ],
+  },
+  {
+    path: "/admin",
+    element: <Admin />,
+    children: [
       {
-        path: "/user-profile",
-        element: <UserProfile user={user} />,
-        title: "Tugas",
+        path: "/admin/user-profile",
+        element: <UserProfile />,
+        title: "User Profile",
       },
       {
-        path: "/customer-dashboard",
-        element: <CustomerDashboard />,
-        title: "Customer Dashboard",
+        path: "/admin/dashboard-pelanggan",
+        element: <DashboardPelanggan />,
+        title: "Dashboard Pelanggan",
       },
       {
-        path: "/employee-dashboard",
-        element: <EmployeeDashboard />,
-        title: "Employee Dashboard",
+        path: "/admin/dashboard-karyawan",
+        element: <DashboardKaryawan />,
+        title: "Dashboard Karyawan",
       },
       {
-        path: "/product-master",
-        element: <ProductMaster />,
-        title: "Product Master",
+        path: "/admin/input-data-barang",
+        element: <InputDataBarang />,
+        title: "Input Data Barang",
+      },
+      {
+        path: "/admin/input-data-customer",
+        element: <InputDataCustomer />,
+        title: "Input Data Customer",
+      },
+      {
+        path: "/admin/input-transaksi-penjualan",
+        element: <InputTransaksiPenjualan />,
+        title: "Input Transaksi Penjualan",
+      },
+      {
+        path: "/admin/laporan-penjualan",
+        element: <LaporanPenjualan />,
+        title: "Laporan Penjualan",
       },
     ],
   },
