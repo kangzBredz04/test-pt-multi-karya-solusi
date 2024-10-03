@@ -1,9 +1,10 @@
-import { useEffect } from "react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function DashboardPelanggan() {
   const [customers, setCustomers] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [showPopup, setShowPopup] = useState(false);
+  const [selectedCustomer, setSelectedCustomer] = useState(null); // State to store selected customer data
 
   useEffect(() => {
     const fetchCustomers = async () => {
@@ -43,41 +44,22 @@ export default function DashboardPelanggan() {
     customer.detail.fullname.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  const handleShow = (id) => {
-    // Implement show functionality
-    console.log(`Show customer with id: ${id}`);
+  const handleShow = (customer) => {
+    setSelectedCustomer(customer); // Set selected customer data
+    setShowPopup(true); // Show popup
   };
 
-  const handleUpdate = (id) => {
-    // Implement update functionality
-    console.log(`Update customer with id: ${id}`);
+  const handleUpdate = () => {
+    alert("Fitur update belum siap!");
   };
 
-  const handleDelete = async (id) => {
-    const apiToken = localStorage.getItem("api_token");
-    try {
-      const response = await fetch(
-        `https://api2024.mksolusi.id/api/master/user/delete/${id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${apiToken}`,
-          },
-        }
-      );
+  const handleDelete = () => {
+    alert("Fitur delete belum siap!");
+  };
 
-      if (response.ok) {
-        // Remove deleted customer from state
-        setCustomers((prevCustomers) =>
-          prevCustomers.filter((customer) => customer.id !== id)
-        );
-      } else {
-        throw new Error("Failed to delete customer");
-      }
-    } catch (error) {
-      console.error("Error deleting customer:", error);
-    }
+  const closePopup = () => {
+    setShowPopup(false); // Close the popup
+    setSelectedCustomer(null); // Clear selected customer data
   };
 
   return (
@@ -122,7 +104,7 @@ export default function DashboardPelanggan() {
               <td className="py-2 px-4">{customer.detail.phone_number}</td>
               <td className="py-2 px-4">
                 <button
-                  onClick={() => handleShow(customer.id)}
+                  onClick={() => handleShow(customer)}
                   className="bg-blue-500 text-white px-3 py-1 rounded-lg hover:bg-blue-600 transition"
                 >
                   Show
@@ -144,6 +126,31 @@ export default function DashboardPelanggan() {
           ))}
         </tbody>
       </table>
+
+      {/* Popup */}
+      {showPopup && selectedCustomer && (
+        <div className="fixed inset-0 z-10 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg max-w-md w-full">
+            <h2 className="text-xl font-bold mb-4">Customer Details</h2>
+            <p>
+              <strong>Full Name:</strong> {selectedCustomer.detail.fullname}
+            </p>
+            <p>
+              <strong>Address:</strong> {selectedCustomer.detail.address}
+            </p>
+            <p>
+              <strong>Phone Number:</strong>{" "}
+              {selectedCustomer.detail.phone_number}
+            </p>
+            <button
+              onClick={closePopup}
+              className="mt-4 bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

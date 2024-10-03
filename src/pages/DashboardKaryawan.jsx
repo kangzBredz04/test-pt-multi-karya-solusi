@@ -1,8 +1,11 @@
+/* eslint-disable no-unused-vars */
 import { useEffect, useState } from "react";
 
 export default function DashboardKaryawan() {
   const [employees, setEmployees] = useState([]);
   const [searchTerm, setSearchTerm] = useState("");
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const [isPopupOpen, setIsPopupOpen] = useState(false);
 
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -43,13 +46,13 @@ export default function DashboardKaryawan() {
   );
 
   const handleShow = (id) => {
-    // Implement show functionality
-    console.log(`Show employee with id: ${id}`);
+    const employee = employees.find((emp) => emp.id === id);
+    setSelectedEmployee(employee);
+    setIsPopupOpen(true);
   };
 
   const handleUpdate = (id) => {
-    // Implement update functionality
-    console.log(`Update employee with id: ${id}`);
+    alert("Update feature not yet available.");
   };
 
   const handleDelete = async (id) => {
@@ -77,6 +80,11 @@ export default function DashboardKaryawan() {
     } catch (error) {
       console.error("Error deleting employee:", error);
     }
+  };
+
+  const closePopup = () => {
+    setIsPopupOpen(false);
+    setSelectedEmployee(null);
   };
 
   return (
@@ -144,6 +152,30 @@ export default function DashboardKaryawan() {
           ))}
         </tbody>
       </table>
+
+      {isPopupOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+          <div className="bg-white p-6 rounded-lg shadow-lg">
+            <h2 className="text-xl font-bold mb-4">
+              {selectedEmployee?.detail?.fullname}`s Details
+            </h2>
+            <p>
+              <strong>Position: </strong>
+              {selectedEmployee?.detail?.position}
+            </p>
+            <p>
+              <strong>Phone: </strong>
+              {selectedEmployee?.detail?.phone_number}
+            </p>
+            <button
+              onClick={closePopup}
+              className="bg-red-500 text-white px-3 py-1 rounded-lg hover:bg-red-600 transition mt-4"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
